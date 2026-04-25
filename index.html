@@ -414,7 +414,7 @@
 
 <header>
   <h1>인생투컷</h1>
-  <p>4장 연속 촬영 후 마음에 드는 두 장을 골라요.</p>
+  <p>4장 연속 촬영됩니다. 맘에 드는 2장을 골라요❤️</p>
 </header>
 
 <!-- Progress -->
@@ -488,7 +488,7 @@
     <div class="select-grid" id="selectGrid"></div>
     <div class="select-actions">
       <button class="btn btn-secondary" onclick="goBackToCamera()">↩ 다시 촬영</button>
-      <button class="btn btn-primary" id="btnCompose" onclick="composeImage()" disabled>✅ 합성하기</button>
+      <button class="btn btn-primary" id="btnCompose" onclick="composeImage()" disabled>✅ 두 장 고르기</button>
     </div>
   </div>
 
@@ -899,6 +899,9 @@ function download(format) {
   .guide { margin-top: 24px; background: #0f3460; border-radius: 12px;
            padding: 16px 20px; text-align: center; line-height: 1.8; }
   .guide strong { color: #00b4d8; }
+  .btn-reset { margin-top: 20px; padding: 14px 32px; background: #0f3460;
+               color: #e0e0e0; border: none; border-radius: 12px; font-size: 1rem;
+               font-weight: 600; cursor: pointer; }
 </style>
 </head>
 <body>
@@ -908,6 +911,7 @@ function download(format) {
   → <strong>"사진에 추가"</strong> 선택<br>
   <span style="color:#8888aa;font-size:0.85rem">사진 앱 카메라 롤에 저장됩니다</span>
 </div>
+<button class="btn-reset" onclick="window.opener && window.opener.resetAll(); window.close();">🔄 새로 촬영하기</button>
 </body>
 </html>`);
     w.document.close();
