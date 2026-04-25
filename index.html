@@ -191,8 +191,8 @@
   }
   @media (min-width: 700px) {
     .camera-layout { flex-direction: row; align-items: flex-start; }
-    .camera-col { flex: 1; }
-    .thumbs-col { width: 200px; flex-shrink: 0; }
+    .camera-col { flex: 1; min-width: 0; }
+    .thumbs-col { width: 290px; flex-shrink: 0; }
   }
 
   .video-wrap {
@@ -202,7 +202,10 @@
     overflow: hidden;
     box-shadow: 0 8px 32px rgba(0,0,0,0.5);
     aspect-ratio: 21/17;
-    max-height: 60vh;
+    max-height: 60vh; /* 모바일 전용 */
+  }
+  @media (min-width: 700px) {
+    .video-wrap { max-height: none; } /* 데스크톱: 비율로만 제어 */
   }
   video {
     width: 100%;
@@ -267,8 +270,9 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 8px;
   }
+  /* 데스크톱: 2×2 그리드 유지 (썸네일이 옆으로 너무 좁아지지 않도록) */
   @media (min-width: 700px) {
-    .thumb-list { grid-template-columns: 1fr; }
+    .thumb-list { grid-template-columns: repeat(2, 1fr); }
   }
 
   .thumb-item {
