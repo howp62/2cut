@@ -929,6 +929,8 @@ function resetAll() {
   photos = Array(MAX_SHOTS).fill(null);
   selectedIndices = [];
   retakeIndex = -1;
+  isCountingDown = false;
+  btnShoot.disabled = false;
   renderThumbSlots();
   updateShotCount();
   showScreen('screenCamera');
