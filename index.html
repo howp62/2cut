@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>인생투컷</title>
+<link id="appleIcon" rel="apple-touch-icon" sizes="180x180" href="">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="2컷">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -197,7 +201,7 @@
     border-radius: var(--radius);
     overflow: hidden;
     box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-    aspect-ratio: 3/4;
+    aspect-ratio: 21/17;
     max-height: 60vh;
   }
   video {
@@ -514,6 +518,41 @@
 <canvas id="compositeCanvas" width="630" height="1020"></canvas>
 
 <script>
+// ─── App Icon 생성 (홈화면 추가 시 "2" 아이콘) ────────────
+(function () {
+  const ic = document.createElement('canvas');
+  ic.width = 180; ic.height = 180;
+  const c = ic.getContext('2d');
+  // 둥근 배경
+  const r = 36;
+  c.beginPath();
+  c.moveTo(r, 0); c.lineTo(180 - r, 0);
+  c.quadraticCurveTo(180, 0, 180, r);
+  c.lineTo(180, 180 - r);
+  c.quadraticCurveTo(180, 180, 180 - r, 180);
+  c.lineTo(r, 180);
+  c.quadraticCurveTo(0, 180, 0, 180 - r);
+  c.lineTo(0, r);
+  c.quadraticCurveTo(0, 0, r, 0);
+  c.closePath();
+  const g = c.createLinearGradient(0, 0, 180, 180);
+  g.addColorStop(0, '#00b4d8');
+  g.addColorStop(1, '#0077b6');
+  c.fillStyle = g;
+  c.fill();
+  // "2" 텍스트
+  c.fillStyle = '#ffffff';
+  c.font = 'bold 120px Arial, sans-serif';
+  c.textAlign = 'center';
+  c.textBaseline = 'middle';
+  c.fillText('2', 90, 94);
+  const url = ic.toDataURL('image/png');
+  document.getElementById('appleIcon').href = url;
+  const fav = document.createElement('link');
+  fav.rel = 'icon'; fav.type = 'image/png'; fav.href = url;
+  document.head.appendChild(fav);
+})();
+
 // ─── State ───────────────────────────────────────────────
 const MAX_SHOTS = 4;
 const CANVAS_W = 630;
