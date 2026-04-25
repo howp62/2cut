@@ -125,19 +125,15 @@ video{width:100%;height:100%;object-fit:cover;display:block}
 .tab-panel{display:none;width:100%;max-width:440px}
 .tab-panel.active{display:block}
 
-/* SVG sticker panel */
-.sticker-panel{background:var(--surface);padding:10px;border-radius:var(--radius)}
-.color-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:10px}
-.color-row>span{font-size:.75rem;color:var(--text-dim)}
-.color-swatches{display:flex;gap:5px;flex-wrap:wrap}
-.color-swatch{width:24px;height:24px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:transform .15s;flex-shrink:0}
-.color-swatch.active{border-color:var(--accent);transform:scale(1.25)}
-.shape-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
-@media(min-width:400px){.shape-grid{grid-template-columns:repeat(7,1fr)}}
-.shape-btn{border:none;background:var(--surface2);border-radius:8px;padding:6px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:background .15s;-webkit-tap-highlight-color:transparent}
-.shape-btn:hover,.shape-btn:active{background:#1a4a7a}
-.shape-btn img{width:36px;height:36px;pointer-events:none}
-.shape-btn span{font-size:.6rem;color:var(--text-dim)}
+/* emoji sticker panel */
+.emoji-panel{background:var(--surface);padding:10px;border-radius:var(--radius)}
+.emoji-size-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.emoji-size-row>span{font-size:.75rem;color:var(--text-dim);white-space:nowrap}
+.emoji-size-row input[type=range]{flex:1;accent-color:var(--accent)}
+.emoji-size-val{font-size:.8rem;color:var(--text);min-width:28px;text-align:right}
+.emoji-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:2px;max-height:148px;overflow-y:auto}
+.emoji-btn{border:none;background:transparent;font-size:1.45rem;cursor:pointer;padding:4px;border-radius:6px;transition:background .15s;line-height:1;-webkit-tap-highlight-color:transparent}
+.emoji-btn:hover,.emoji-btn:active{background:var(--surface2)}
 
 /* text panel */
 .text-panel{background:var(--surface);padding:12px;border-radius:var(--radius);display:flex;flex-direction:column;gap:10px}
@@ -247,18 +243,19 @@ video{width:100%;height:100%;object-fit:cover;display:block}
       </div>
 
       <div class="deco-tabs">
-        <button class="tab-btn active" id="tabBtnSvg" onclick="switchTab('svg')">🎨 SVG 스티커</button>
+        <button class="tab-btn active" id="tabBtnEmoji" onclick="switchTab('emoji')">😊 이모지</button>
         <button class="tab-btn" id="tabBtnText" onclick="switchTab('text')">✏️ 텍스트</button>
       </div>
 
-      <!-- SVG 스티커 패널 -->
-      <div class="tab-panel active" id="panelSvg">
-        <div class="sticker-panel">
-          <div class="color-row">
-            <span>색상</span>
-            <div class="color-swatches" id="svgColorSwatches"></div>
+      <!-- 이모지 스티커 패널 -->
+      <div class="tab-panel active" id="panelEmoji">
+        <div class="emoji-panel">
+          <div class="emoji-size-row">
+            <span>크기</span>
+            <input type="range" id="emojiSizeRange" min="20" max="72" value="36" oninput="document.getElementById('emojiSizeVal').textContent=this.value">
+            <span class="emoji-size-val" id="emojiSizeVal">36</span>
           </div>
-          <div class="shape-grid" id="shapeGrid"></div>
+          <div class="emoji-grid" id="emojiGrid"></div>
         </div>
       </div>
 
@@ -330,24 +327,15 @@ video{width:100%;height:100%;object-fit:cover;display:block}
 // ── Constants ─────────────────────────────────────────────
 const CANVAS_W=630, CANVAS_H=1020, HALF_H=510, MAX_SHOTS=4;
 
-// SVG shape library — all 100×100 viewBox for uniform square rendering
-const SVG_SHAPES=[
-  {key:'heart',   label:'하트',  svg:c=>`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 88C50 88 7 62 7 34C7 17 19 7 34 7C41 7 47 10 50 16C53 10 59 7 66 7C81 7 93 17 93 34C93 62 50 88 50 88Z" fill="${c}"/></svg>`},
-  {key:'star5',   label:'별',    svg:c=>`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,5 61,36 95,36 68,57 79,91 50,70 21,91 32,57 5,36 39,36" fill="${c}"/></svg>`},
-  {key:'star6',   label:'별2',   svg:c=>`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,5 62,30 89,28 73,50 89,72 62,70 50,95 38,70 11,72 27,50 11,28 38,30" fill="${c}"/></svg>`},
-  {key:'crown',   label:'왕관',  svg:c=>`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="10,80 10,42 30,60 50,12 70,60 90,42 90,80" fill="${c}"/><rect x="10" y="78" width="80" height="13" rx="3" fill="${c}"/></svg>`},
-  {key:'diamond', label:'다이아', svg:c=>`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,5 93,42 50,95 7,42" fill="${c}"/><polygon points="50,5 93,42 50,42 7,42" fill="rgba(255,255,255,0.2)"/></svg>`},
-  {key:'moon',    label:'달',    svg:c=>`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M58 8 A40 40 0 1 0 58 92 A27 27 0 1 1 58 8Z" fill="${c}"/></svg>`},
-  {key:'sparkle', label:'반짝',  svg:c=>`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,4 57,44 96,50 57,56 50,96 43,56 4,50 43,44" fill="${c}"/></svg>`},
-  {key:'flower',  label:'꽃',    svg:c=>`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><ellipse cx="50" cy="22" rx="12" ry="20" fill="${c}"/><ellipse cx="50" cy="78" rx="12" ry="20" fill="${c}"/><ellipse cx="22" cy="50" rx="20" ry="12" fill="${c}"/><ellipse cx="78" cy="50" rx="20" ry="12" fill="${c}"/><ellipse cx="30" cy="30" rx="12" ry="20" transform="rotate(45 30 30)" fill="${c}"/><ellipse cx="70" cy="30" rx="12" ry="20" transform="rotate(-45 70 30)" fill="${c}"/><ellipse cx="30" cy="70" rx="12" ry="20" transform="rotate(-45 30 70)" fill="${c}"/><ellipse cx="70" cy="70" rx="12" ry="20" transform="rotate(45 70 70)" fill="${c}"/><circle cx="50" cy="50" r="15" fill="#FFE066"/></svg>`},
-  {key:'bow',     label:'리본',  svg:c=>`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><ellipse cx="27" cy="50" rx="25" ry="16" fill="${c}" transform="rotate(-18 27 50)"/><ellipse cx="73" cy="50" rx="25" ry="16" fill="${c}" transform="rotate(18 73 50)"/><path d="M50 50L44 36L50 26L56 36Z" fill="${c}"/><path d="M50 50L44 64L50 74L56 64Z" fill="${c}"/><circle cx="50" cy="50" r="12" fill="${c}"/><circle cx="50" cy="50" r="7" fill="rgba(255,255,255,0.3)"/></svg>`},
-  {key:'cloud',   label:'구름',  svg:c=>`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><ellipse cx="36" cy="65" rx="30" ry="24" fill="${c}"/><ellipse cx="68" cy="68" rx="24" ry="20" fill="${c}"/><ellipse cx="53" cy="46" rx="28" ry="25" fill="${c}"/></svg>`},
-  {key:'lightning',label:'번개', svg:c=>`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="60,5 30,52 52,52 40,95 72,46 50,46" fill="${c}"/></svg>`},
-  {key:'note',    label:'음표',  svg:c=>`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="38" y="10" width="12" height="60" rx="5" fill="${c}"/><ellipse cx="30" cy="76" rx="20" ry="14" fill="${c}"/><rect x="50" y="10" width="30" height="10" rx="4" fill="${c}"/></svg>`},
-  {key:'butterfly',label:'나비', svg:c=>`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><ellipse cx="28" cy="38" rx="24" ry="30" fill="${c}" opacity="0.9"/><ellipse cx="72" cy="38" rx="24" ry="30" fill="${c}" opacity="0.9"/><ellipse cx="32" cy="68" rx="17" ry="17" fill="${c}" opacity="0.75"/><ellipse cx="68" cy="68" rx="17" ry="17" fill="${c}" opacity="0.75"/><ellipse cx="50" cy="52" rx="5" ry="20" fill="#333"/></svg>`},
+const EMOJIS=[
+  '❤️','🧡','💛','💚','💙','💜','🖤','🤍','🩷',
+  '💕','💞','💗','💖','💝','💘','😊','😄','😍',
+  '🥰','😘','🤩','😎','🤗','🫶','👑','💎','🪄',
+  '🦄','✨','⭐','🌟','💫','🔥','⚡','🌈','🌙',
+  '☁️','🌸','🌺','🌻','🌼','🌹','🍀','🦋','🌊',
+  '🌴','🍃','🎀','🎁','🎉','🎊','🎈','🎶','🎵',
+  '📷','📸','🥂','🍭','🍰','🧁','😂','😭','🥹',
 ];
-
-const SVG_COLORS=['#ff6b9d','#ef476f','#ff9f1c','#ffd166','#06d6a0','#00b4d8','#4361ee','#a855f7','#ffffff','#1a1a2e'];
 const TEXT_COLORS=['#ffffff','#000000','#ff6b9d','#ffd166','#06d6a0','#00b4d8','#ef476f','#ff9f1c'];
 
 const FONTS=[
@@ -363,7 +351,7 @@ let stream=null, currentFacing='user', mirrored=true;
 let photos=Array(MAX_SHOTS).fill(null), retakeIndex=-1;
 let selectedIdx=[], isCountingDown=false;
 let baseCanvas=null, activeStickerEl=null;
-let activeSVGColor='#ff6b9d', activeTextColor='#ffffff', activeFont='Black Han Sans';
+let activeTextColor='#ffffff', activeFont='Black Han Sans';
 
 // ── DOM ───────────────────────────────────────────────────
 const video=document.getElementById('video');
@@ -377,7 +365,7 @@ const canvas=document.getElementById('compositeCanvas');
 const ctx=canvas.getContext('2d');
 
 // ── Init ──────────────────────────────────────────────────
-buildSVGPanel();
+buildEmojiPanel();
 buildTextPanel();
 renderThumbSlots();
 initCamera();
@@ -538,43 +526,12 @@ function updateBorderPreview(){
 }
 function goBackToSelect(){document.getElementById('stickerLayer').innerHTML='';activeStickerEl=null;showScreen('screenSelect');setStep(3);}
 
-// ── SVG Panel ─────────────────────────────────────────────
-function buildSVGPanel(){
-  // color swatches
-  const csWrap=document.getElementById('svgColorSwatches');
-  SVG_COLORS.forEach((hex,i)=>{
-    const sw=document.createElement('div');sw.className='color-swatch'+(i===0?' active':'');
-    sw.style.background=hex;sw.dataset.hex=hex;
-    if(hex==='#ffffff')sw.style.border='2px solid #555';
-    sw.onclick=()=>setSVGColor(hex);csWrap.appendChild(sw);
-  });
-  // shape grid
-  buildShapeGrid();
-}
-function buildShapeGrid(){
-  const grid=document.getElementById('shapeGrid');grid.innerHTML='';
-  SVG_SHAPES.forEach(shape=>{
-    const btn=document.createElement('button');btn.className='shape-btn';btn.title=shape.label;
-    const img=document.createElement('img');img.width=36;img.height=36;img.dataset.key=shape.key;
-    img.src=svgToDataURL(shape.svg(activeSVGColor));img.style.pointerEvents='none';
-    const lbl=document.createElement('span');lbl.textContent=shape.label;
-    btn.appendChild(img);btn.appendChild(lbl);
-    btn.onclick=()=>addSVGSticker(shape.key);grid.appendChild(btn);
-  });
-}
-function setSVGColor(hex){
-  activeSVGColor=hex;
-  document.querySelectorAll('#svgColorSwatches .color-swatch').forEach(s=>s.classList.toggle('active',s.dataset.hex===hex));
-  // update selected sticker color
-  if(activeStickerEl?.dataset.type==='svg'){
-    activeStickerEl.dataset.color=hex;
-    const shape=SVG_SHAPES.find(s=>s.key===activeStickerEl.dataset.svgKey);
-    if(shape){const imgEl=activeStickerEl.querySelector('img');imgEl.src=svgToDataURL(shape.svg(hex));}
-  }
-  // update shape button previews
-  document.querySelectorAll('#shapeGrid img[data-key]').forEach(img=>{
-    const s=SVG_SHAPES.find(s=>s.key===img.dataset.key);
-    if(s)img.src=svgToDataURL(s.svg(hex));
+// ── Emoji Panel ───────────────────────────────────────────
+function buildEmojiPanel(){
+  const grid=document.getElementById('emojiGrid');
+  EMOJIS.forEach(em=>{
+    const btn=document.createElement('button');btn.className='emoji-btn';btn.textContent=em;
+    btn.onclick=()=>addEmojiSticker(em);grid.appendChild(btn);
   });
 }
 
@@ -606,15 +563,12 @@ function buildTextPanel(){
 }
 
 // ── Sticker factory ───────────────────────────────────────
-function addSVGSticker(key){
-  const shape=SVG_SHAPES.find(s=>s.key===key);if(!shape)return;
+function addEmojiSticker(em){
+  const size=parseInt(document.getElementById('emojiSizeRange').value);
   const imgEl=document.getElementById('decoBaseImg');
   const el=document.createElement('div');
-  el.className='sticker';el.dataset.type='svg';el.dataset.svgKey=key;
-  el.dataset.color=activeSVGColor;el.dataset.size=52;
-  const img=document.createElement('img');img.width=52;img.height=52;
-  img.src=svgToDataURL(shape.svg(activeSVGColor));img.style.pointerEvents='none';
-  el.appendChild(img);
+  el.className='sticker';el.dataset.type='emoji';el.dataset.content=em;el.dataset.size=size;
+  el.style.fontSize=size+'px';el.textContent=em;
   el.style.left=(imgEl.offsetWidth/2)+'px';el.style.top=(imgEl.offsetHeight/2)+'px';
   attachDelBtn(el);makeDraggable(el);
   document.getElementById('stickerLayer').appendChild(el);selectSticker(el);
@@ -657,9 +611,9 @@ function selectSticker(el){if(activeStickerEl)activeStickerEl.classList.remove('
 function onLayerClick(e){if(e.target===document.getElementById('stickerLayer')){if(activeStickerEl){activeStickerEl.classList.remove('selected');activeStickerEl=null;}}}
 function clearAllStickers(){document.getElementById('stickerLayer').innerHTML='';activeStickerEl=null;}
 function switchTab(tab){
-  document.getElementById('panelSvg').classList.toggle('active',tab==='svg');
+  document.getElementById('panelEmoji').classList.toggle('active',tab==='emoji');
   document.getElementById('panelText').classList.toggle('active',tab==='text');
-  document.getElementById('tabBtnSvg').classList.toggle('active',tab==='svg');
+  document.getElementById('tabBtnEmoji').classList.toggle('active',tab==='emoji');
   document.getElementById('tabBtnText').classList.toggle('active',tab==='text');
 }
 
@@ -688,30 +642,21 @@ async function finalizeDeco(){
   const layer=document.getElementById('stickerLayer');
   const imgEl=document.getElementById('decoBaseImg');
   const scaleX=CANVAS_W/imgEl.offsetWidth, scaleY=CANVAS_H/imgEl.offsetHeight;
-  const allStickers=[...layer.querySelectorAll('.sticker')];
 
-  // pre-load SVG images
-  const svgImgs={};
-  await Promise.all(allStickers.map(async(el,i)=>{
-    if(el.dataset.type==='svg'){
-      const s=SVG_SHAPES.find(s=>s.key===el.dataset.svgKey);
-      if(s)svgImgs[i]=await loadImg(svgToDataURL(s.svg(el.dataset.color)));
-    }
-  }));
-
-  allStickers.forEach((el,i)=>{
+  layer.querySelectorAll('.sticker').forEach(el=>{
     const cx=parseFloat(el.style.left)*scaleX+B;
     const cy=parseFloat(el.style.top)*scaleY+BT;
     const dSz=parseFloat(el.dataset.size);
     const cSz=dSz*Math.min(scaleX,scaleY);
     ctx.save();
-    if(el.dataset.type==='svg'){
-      const img=svgImgs[i];
-      if(img)ctx.drawImage(img,cx-cSz/2,cy-cSz/2,cSz,cSz);
+    ctx.textAlign='center';ctx.textBaseline='middle';
+    if(el.dataset.type==='emoji'){
+      ctx.font=`${cSz}px "Apple Color Emoji","Noto Color Emoji","Segoe UI Emoji",serif`;
+      ctx.fillText(el.dataset.content,cx,cy);
     }else{
       ctx.font=`bold ${cSz}px '${el.dataset.font}',sans-serif`;
       ctx.shadowColor='rgba(0,0,0,0.6)';ctx.shadowBlur=cSz/6;
-      ctx.fillStyle=el.dataset.color;ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillStyle=el.dataset.color;
       ctx.fillText(el.dataset.content,cx,cy);
     }
     ctx.restore();
@@ -746,8 +691,6 @@ function resetAll(){
 // ── Helpers ───────────────────────────────────────────────
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
 function setStep(n){document.querySelectorAll('#progressBar .step-item').forEach(el=>{const s=parseInt(el.dataset.step);el.classList.remove('active','done');if(s<n)el.classList.add('done');else if(s===n)el.classList.add('active');});}
-function svgToDataURL(svg){return'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);}
-function loadImg(src){return new Promise((res,rej)=>{const img=new Image();img.onload=()=>res(img);img.onerror=rej;img.src=src;});}
 </script>
 </body>
 </html>
