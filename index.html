@@ -9,413 +9,312 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="2컷">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
-    --bg: #1a1a2e;
-    --surface: #16213e;
-    --surface2: #0f3460;
-    --accent: #00b4d8;
-    --accent2: #0077b6;
-    --text: #e0e0e0;
-    --text-dim: #8888aa;
-    --success: #4caf50;
-    --danger: #e63946;
-    --radius: 12px;
-  }
+:root {
+  --bg: #1a1a2e;
+  --surface: #16213e;
+  --surface2: #0f3460;
+  --accent: #00b4d8;
+  --accent2: #0077b6;
+  --text: #e0e0e0;
+  --text-dim: #8888aa;
+  --success: #4caf50;
+  --danger: #e63946;
+  --radius: 12px;
+}
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    min-height: 100vh;
-    padding-bottom: 40px;
-  }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  min-height: 100vh;
+  padding-bottom: 40px;
+}
 
-  header {
-    text-align: center;
-    padding: 24px 16px 16px;
-  }
-  header h1 {
-    font-size: 2rem;
-    font-weight: 800;
-    background: linear-gradient(135deg, var(--accent), #a8dadc);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: -0.5px;
-  }
-  header p {
-    color: var(--text-dim);
-    font-size: 0.85rem;
-    margin-top: 4px;
-  }
+header { text-align: center; padding: 24px 16px 16px; }
+header h1 {
+  font-size: 2rem; font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), #a8dadc);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  letter-spacing: -0.5px;
+}
+header p { color: var(--text-dim); font-size: 0.85rem; margin-top: 4px; }
 
-  /* Progress bar */
-  .progress-wrap {
-    display: flex;
-    justify-content: center;
-    gap: 0;
-    padding: 0 16px 24px;
-    max-width: 600px;
-    margin: 0 auto;
-  }
-  .step-item {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-  }
-  .step-item:not(:last-child)::after {
-    content: '';
-    position: absolute;
-    top: 15px;
-    left: 50%;
-    width: 100%;
-    height: 2px;
-    background: var(--surface2);
-    transition: background 0.3s;
-  }
-  .step-item.done:not(:last-child)::after,
-  .step-item.active:not(:last-child)::after {
-    background: var(--accent);
-  }
-  .step-dot {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: var(--surface2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.7rem;
-    font-weight: 700;
-    position: relative;
-    z-index: 1;
-    transition: all 0.3s;
-    color: var(--text-dim);
-  }
-  .step-item.done .step-dot {
-    background: var(--accent);
-    color: #fff;
-  }
-  .step-item.active .step-dot {
-    background: var(--accent);
-    color: #fff;
-    box-shadow: 0 0 12px var(--accent);
-  }
-  .step-label {
-    font-size: 0.6rem;
-    margin-top: 4px;
-    color: var(--text-dim);
-    white-space: nowrap;
-  }
-  .step-item.active .step-label { color: var(--accent); }
+/* ── Progress bar ───────────────────────────── */
+.progress-wrap {
+  display: flex; justify-content: center; gap: 0;
+  padding: 0 16px 24px; max-width: 680px; margin: 0 auto;
+}
+.step-item {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; position: relative;
+}
+.step-item:not(:last-child)::after {
+  content: ''; position: absolute; top: 15px; left: 50%;
+  width: 100%; height: 2px; background: var(--surface2); transition: background .3s;
+}
+.step-item.done:not(:last-child)::after,
+.step-item.active:not(:last-child)::after { background: var(--accent); }
+.step-dot {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--surface2); display: flex; align-items: center;
+  justify-content: center; font-size: .7rem; font-weight: 700;
+  position: relative; z-index: 1; transition: all .3s; color: var(--text-dim);
+}
+.step-item.done .step-dot { background: var(--accent); color: #fff; }
+.step-item.active .step-dot { background: var(--accent); color: #fff; box-shadow: 0 0 12px var(--accent); }
+.step-label { font-size: .6rem; margin-top: 4px; color: var(--text-dim); white-space: nowrap; }
+.step-item.active .step-label { color: var(--accent); }
 
-  /* Main content */
-  main {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0 16px;
-  }
+/* ── Layout ─────────────────────────────────── */
+main { max-width: 900px; margin: 0 auto; padding: 0 16px; }
+.screen { display: none; }
+.screen.active { display: block; }
 
-  .screen { display: none; }
-  .screen.active { display: block; }
+/* ── Buttons ────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 6px; padding: 12px 24px; border: none; border-radius: var(--radius);
+  font-size: 1rem; font-weight: 600; cursor: pointer; transition: all .2s;
+  outline: none; -webkit-tap-highlight-color: transparent;
+}
+.btn:active { transform: scale(.97); }
+.btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; box-shadow: 0 4px 15px rgba(0,180,216,.3); }
+.btn-primary:hover { box-shadow: 0 4px 20px rgba(0,180,216,.5); }
+.btn-primary:disabled { opacity: .4; cursor: not-allowed; box-shadow: none; }
+.btn-secondary { background: var(--surface2); color: var(--text); }
+.btn-secondary:hover { background: #1a4a7a; }
+.btn-danger { background: var(--danger); color: #fff; }
+.btn-success { background: var(--success); color: #fff; box-shadow: 0 4px 15px rgba(76,175,80,.3); }
+.btn-sm { padding: 6px 12px; font-size: .75rem; border-radius: 8px; }
 
-  /* Buttons */
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    padding: 12px 24px;
-    border: none;
-    border-radius: var(--radius);
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    outline: none;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .btn:active { transform: scale(0.97); }
-  .btn-primary {
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    color: #fff;
-    box-shadow: 0 4px 15px rgba(0,180,216,0.3);
-  }
-  .btn-primary:hover { box-shadow: 0 4px 20px rgba(0,180,216,0.5); }
-  .btn-primary:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-    box-shadow: none;
-  }
-  .btn-secondary {
-    background: var(--surface2);
-    color: var(--text);
-  }
-  .btn-secondary:hover { background: #1a4a7a; }
-  .btn-danger {
-    background: var(--danger);
-    color: #fff;
-  }
-  .btn-success {
-    background: var(--success);
-    color: #fff;
-    box-shadow: 0 4px 15px rgba(76,175,80,0.3);
-  }
-  .btn-sm {
-    padding: 6px 12px;
-    font-size: 0.75rem;
-    border-radius: 8px;
-  }
+/* ── Error ──────────────────────────────────── */
+.error-box {
+  text-align: center; padding: 40px 20px;
+  background: var(--surface); border-radius: var(--radius); border: 1px solid #e63946;
+}
+.error-box .icon { font-size: 3rem; margin-bottom: 16px; }
+.error-box h2 { margin-bottom: 8px; }
+.error-box p { color: var(--text-dim); line-height: 1.6; }
 
-  /* Error screen */
-  .error-box {
-    text-align: center;
-    padding: 40px 20px;
-    background: var(--surface);
-    border-radius: var(--radius);
-    border: 1px solid #e63946;
-  }
-  .error-box .icon { font-size: 3rem; margin-bottom: 16px; }
-  .error-box h2 { margin-bottom: 8px; }
-  .error-box p { color: var(--text-dim); line-height: 1.6; }
+/* ── Camera screen ──────────────────────────── */
+.camera-layout { display: flex; flex-direction: column; gap: 20px; }
+@media (min-width: 700px) {
+  .camera-layout { flex-direction: row; align-items: flex-start; }
+  .camera-col { flex: 1; min-width: 0; }
+  .thumbs-col { width: 290px; flex-shrink: 0; }
+}
 
-  /* Camera screen */
-  .camera-layout {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  @media (min-width: 700px) {
-    .camera-layout { flex-direction: row; align-items: flex-start; }
-    .camera-col { flex: 1; min-width: 0; }
-    .thumbs-col { width: 290px; flex-shrink: 0; }
-  }
+.video-wrap {
+  position: relative; background: #000;
+  border-radius: var(--radius); overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,0,0,.5); aspect-ratio: 21/17;
+  max-height: 60vh;
+}
+@media (min-width: 700px) { .video-wrap { max-height: none; } }
+video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.video-wrap.mirrored video { transform: scaleX(-1); }
 
-  .video-wrap {
-    position: relative;
-    background: #000;
-    border-radius: var(--radius);
-    overflow: hidden;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-    aspect-ratio: 21/17;
-    max-height: 60vh; /* 모바일 전용 */
-  }
-  @media (min-width: 700px) {
-    .video-wrap { max-height: none; } /* 데스크톱: 비율로만 제어 */
-  }
-  video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-  .video-wrap.mirrored video { transform: scaleX(-1); }
+.countdown-overlay {
+  position: absolute; inset: 0; display: flex; align-items: center;
+  justify-content: center; font-size: 6rem; font-weight: 900; color: #fff;
+  text-shadow: 0 0 40px rgba(0,0,0,.8); pointer-events: none; opacity: 0; transition: opacity .2s;
+}
+.countdown-overlay.visible { opacity: 1; }
+.flash-overlay {
+  position: absolute; inset: 0; background: #fff;
+  pointer-events: none; opacity: 0; transition: opacity .05s;
+}
+.flash-overlay.flash { opacity: 1; }
 
-  .countdown-overlay {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 6rem;
-    font-weight: 900;
-    color: #fff;
-    text-shadow: 0 0 40px rgba(0,0,0,0.8);
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-  .countdown-overlay.visible { opacity: 1; }
+.shot-count { text-align: center; font-size: .9rem; color: var(--text-dim); margin-top: 8px; min-height: 1.5em; }
+.shot-count strong { color: var(--accent); font-size: 1.1rem; }
 
-  .flash-overlay {
-    position: absolute;
-    inset: 0;
-    background: #fff;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.05s;
-  }
-  .flash-overlay.flash { opacity: 1; }
+.camera-controls { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+.camera-controls .btn { flex: 1; min-width: 100px; }
 
-  .shot-count {
-    text-align: center;
-    font-size: 0.9rem;
-    color: var(--text-dim);
-    margin-top: 8px;
-    min-height: 1.5em;
-  }
-  .shot-count strong { color: var(--accent); font-size: 1.1rem; }
+/* ── Thumbnails ─────────────────────────────── */
+.thumbs-col h3 { font-size: .85rem; color: var(--text-dim); margin-bottom: 10px; text-align: center; }
+.thumb-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+@media (min-width: 700px) { .thumb-list { grid-template-columns: repeat(2, 1fr); } }
 
-  .camera-controls {
-    display: flex;
-    gap: 10px;
-    margin-top: 12px;
-    flex-wrap: wrap;
-  }
-  .camera-controls .btn { flex: 1; min-width: 100px; }
+.thumb-item {
+  background: var(--surface); border-radius: 8px; overflow: hidden;
+  border: 2px solid transparent; transition: border-color .2s; position: relative;
+}
+.thumb-item.empty {
+  aspect-ratio: 21/17; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  color: var(--text-dim); font-size: .75rem; gap: 6px; border: 2px dashed var(--surface2);
+}
+.thumb-item.empty .num { font-size: 1.2rem; font-weight: 700; color: var(--surface2); }
+.thumb-item img { width: 100%; aspect-ratio: 21/17; object-fit: cover; display: block; }
+.thumb-retake {
+  position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%);
+  white-space: nowrap; opacity: 0; transition: opacity .2s;
+}
+.thumb-item:hover .thumb-retake { opacity: 1; }
+@media (pointer: coarse) { .thumb-retake { opacity: 1; } }
 
-  /* Thumbnails */
-  .thumbs-col h3 {
-    font-size: 0.85rem;
-    color: var(--text-dim);
-    margin-bottom: 10px;
-    text-align: center;
-  }
-  .thumb-list {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-  }
-  /* 데스크톱: 2×2 그리드 유지 (썸네일이 옆으로 너무 좁아지지 않도록) */
-  @media (min-width: 700px) {
-    .thumb-list { grid-template-columns: repeat(2, 1fr); }
-  }
+/* ── Select screen ──────────────────────────── */
+.select-instruction {
+  text-align: center; padding: 12px 16px;
+  background: var(--surface); border-radius: var(--radius); margin-bottom: 16px;
+}
+.select-instruction p { margin-bottom: 4px; }
+.select-count { color: var(--accent); font-weight: 700; font-size: 1.1rem; }
 
-  .thumb-item {
-    background: var(--surface);
-    border-radius: 8px;
-    overflow: hidden;
-    border: 2px solid transparent;
-    transition: border-color 0.2s;
-    position: relative;
-  }
-  .thumb-item.empty {
-    aspect-ratio: 21/17;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: var(--text-dim);
-    font-size: 0.75rem;
-    gap: 6px;
-    border: 2px dashed var(--surface2);
-  }
-  .thumb-item.empty .num {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: var(--surface2);
-  }
-  .thumb-item img {
-    width: 100%;
-    aspect-ratio: 21/17;
-    object-fit: cover;
-    display: block;
-  }
-  .thumb-retake {
-    position: absolute;
-    bottom: 4px;
-    left: 50%;
-    transform: translateX(-50%);
-    white-space: nowrap;
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-  .thumb-item:hover .thumb-retake { opacity: 1; }
-  @media (pointer: coarse) {
-    .thumb-retake { opacity: 1; }
-  }
+.select-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 12px; margin-bottom: 20px;
+}
+@media (min-width: 600px) { .select-grid { grid-template-columns: repeat(4, 1fr); } }
 
-  /* Select screen */
-  .select-instruction {
-    text-align: center;
-    padding: 12px 16px;
-    background: var(--surface);
-    border-radius: var(--radius);
-    margin-bottom: 16px;
-  }
-  .select-instruction p { margin-bottom: 4px; }
-  .select-count { color: var(--accent); font-weight: 700; font-size: 1.1rem; }
+.select-item {
+  position: relative; border-radius: var(--radius); overflow: hidden;
+  cursor: pointer; border: 3px solid transparent; transition: all .2s;
+  user-select: none; -webkit-tap-highlight-color: transparent;
+}
+.select-item img { width: 100%; aspect-ratio: 21/17; object-fit: cover; display: block; }
+.select-item.selected { border-color: var(--accent); box-shadow: 0 0 16px rgba(0,180,216,.4); }
+.select-badge {
+  position: absolute; top: 6px; right: 6px; width: 28px; height: 28px;
+  border-radius: 50%; background: var(--accent); color: #fff; font-weight: 800;
+  font-size: .9rem; display: none; align-items: center; justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,.4);
+}
+.select-item.selected .select-badge { display: flex; }
+.select-actions { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
 
-  .select-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    margin-bottom: 20px;
-  }
-  @media (min-width: 600px) {
-    .select-grid { grid-template-columns: repeat(4, 1fr); }
-  }
+/* ── Decoration screen ──────────────────────── */
+.deco-wrap { display: flex; flex-direction: column; align-items: center; gap: 14px; }
 
-  .select-item {
-    position: relative;
-    border-radius: var(--radius);
-    overflow: hidden;
-    cursor: pointer;
-    border: 3px solid transparent;
-    transition: all 0.2s;
-    user-select: none;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .select-item img {
-    width: 100%;
-    aspect-ratio: 21/17;
-    object-fit: cover;
-    display: block;
-  }
-  .select-item.selected {
-    border-color: var(--accent);
-    box-shadow: 0 0 16px rgba(0,180,216,0.4);
-  }
-  .select-badge {
-    position: absolute;
-    top: 6px;
-    right: 6px;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: var(--accent);
-    color: #fff;
-    font-weight: 800;
-    font-size: 0.9rem;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-  }
-  .select-item.selected .select-badge { display: flex; }
+.deco-options {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  background: var(--surface); padding: 10px 14px;
+  border-radius: var(--radius); width: 100%; max-width: 440px;
+}
+.toggle-label {
+  display: flex; align-items: center; gap: 6px;
+  cursor: pointer; font-size: .88rem; user-select: none;
+}
+.toggle-label input[type="checkbox"] { width: 17px; height: 17px; cursor: pointer; accent-color: var(--accent); }
+.date-input-field {
+  flex: 1; min-width: 110px; background: var(--surface2); border: none;
+  color: var(--text); padding: 6px 10px; border-radius: 8px; font-size: .85rem;
+}
+.date-input-field:focus { outline: 1px solid var(--accent); }
 
-  .select-actions {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
+/* preview area */
+.deco-preview-wrap {
+  position: relative; width: 100%; max-width: 280px; cursor: default;
+  border-radius: 8px; transition: padding .2s, background .2s;
+}
+.deco-preview-wrap img {
+  width: 100%; display: block; border-radius: 8px; pointer-events: none;
+  user-select: none; -webkit-user-select: none;
+}
+.deco-preview-wrap.has-border {
+  background: #fff; padding: 8px 8px 30px; border-radius: 4px;
+}
+.deco-preview-wrap.has-border img { border-radius: 2px; }
+.border-date-text {
+  position: absolute; bottom: 6px; left: 0; right: 0;
+  text-align: center; font-size: 10px; color: #333; font-weight: 700;
+  pointer-events: none;
+}
 
-  /* Result screen */
-  .result-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-  }
-  .result-preview {
-    max-width: 300px;
-    width: 100%;
-  }
-  .result-preview img {
-    width: 100%;
-    border-radius: var(--radius);
-    box-shadow: 0 8px 40px rgba(0,0,0,0.6);
-    display: block;
-  }
-  .result-info {
-    text-align: center;
-    color: var(--text-dim);
-    font-size: 0.8rem;
-  }
-  .result-actions {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
+/* sticker layer */
+.sticker-layer { position: absolute; inset: 0; }
+.sticker {
+  position: absolute; cursor: grab; touch-action: none;
+  user-select: none; -webkit-user-select: none;
+  transform: translate(-50%, -50%); line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+}
+.sticker:active { cursor: grabbing; }
+.sticker.selected::before {
+  content: '';
+  position: absolute; inset: -4px;
+  border: 1.5px dashed var(--accent); border-radius: 4px; pointer-events: none;
+}
+.sticker-del {
+  position: absolute; top: -11px; right: -11px; width: 20px; height: 20px;
+  background: var(--danger); color: #fff; border: none; border-radius: 50%;
+  font-size: 10px; cursor: pointer; display: none; align-items: center;
+  justify-content: center; z-index: 20; line-height: 1;
+}
+.sticker.selected .sticker-del { display: flex; }
 
-  /* Hidden canvas */
-  #compositeCanvas { display: none; }
+/* tabs */
+.deco-tabs {
+  display: flex; gap: 4px; background: var(--surface);
+  padding: 4px; border-radius: 10px; width: 100%; max-width: 440px;
+}
+.tab-btn {
+  flex: 1; padding: 8px; border: none; background: transparent;
+  color: var(--text-dim); border-radius: 8px; font-size: .88rem;
+  cursor: pointer; transition: all .2s; -webkit-tap-highlight-color: transparent;
+}
+.tab-btn.active { background: var(--surface2); color: var(--accent); font-weight: 600; }
+
+.tab-panel { display: none; width: 100%; max-width: 440px; }
+.tab-panel.active { display: block; }
+
+/* emoji panel */
+.emoji-grid {
+  display: grid; grid-template-columns: repeat(9, 1fr); gap: 2px;
+  background: var(--surface); padding: 8px; border-radius: var(--radius);
+  max-height: 148px; overflow-y: auto;
+}
+.emoji-btn {
+  border: none; background: transparent; font-size: 1.45rem;
+  cursor: pointer; padding: 4px; border-radius: 6px;
+  transition: background .15s; line-height: 1;
+  -webkit-tap-highlight-color: transparent;
+}
+.emoji-btn:hover, .emoji-btn:active { background: var(--surface2); }
+
+/* text panel */
+.text-panel {
+  background: var(--surface); padding: 12px;
+  border-radius: var(--radius); display: flex; flex-direction: column; gap: 10px;
+}
+.text-input-row { display: flex; gap: 8px; }
+.text-sticker-field {
+  flex: 1; background: var(--surface2); border: none; color: var(--text);
+  padding: 8px 12px; border-radius: 8px; font-size: .95rem;
+}
+.text-sticker-field:focus { outline: 1px solid var(--accent); }
+.text-sticker-field::placeholder { color: var(--text-dim); }
+.color-row { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.color-row span { font-size: .75rem; color: var(--text-dim); }
+.color-swatch {
+  width: 24px; height: 24px; border-radius: 50%;
+  border: 2px solid transparent; cursor: pointer; transition: transform .15s;
+  flex-shrink: 0;
+}
+.color-swatch.active { border-color: var(--accent); transform: scale(1.25); }
+.size-row { display: flex; align-items: center; gap: 10px; }
+.size-row span { font-size: .75rem; color: var(--text-dim); white-space: nowrap; }
+.size-row input[type="range"] { flex: 1; accent-color: var(--accent); }
+.size-val { font-size: .8rem; color: var(--text); min-width: 28px; text-align: right; }
+
+/* clear all */
+.deco-clear { font-size: .75rem; color: var(--text-dim); cursor: pointer; text-decoration: underline; }
+
+/* deco actions */
+.deco-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; width: 100%; max-width: 440px; }
+
+/* ── Result screen ───────────────────────────── */
+.result-wrap { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+.result-preview { max-width: 300px; width: 100%; }
+.result-preview img { width: 100%; border-radius: var(--radius); box-shadow: 0 8px 40px rgba(0,0,0,.6); display: block; }
+.result-info { text-align: center; color: var(--text-dim); font-size: .8rem; }
+.result-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+
+#compositeCanvas { display: none; }
 </style>
 </head>
 <body>
@@ -427,31 +326,16 @@
 
 <!-- Progress -->
 <div class="progress-wrap" id="progressBar">
-  <div class="step-item active" data-step="1">
-    <div class="step-dot">1</div>
-    <span class="step-label">카메라</span>
-  </div>
-  <div class="step-item" data-step="2">
-    <div class="step-dot">2</div>
-    <span class="step-label">촬영</span>
-  </div>
-  <div class="step-item" data-step="3">
-    <div class="step-dot">3</div>
-    <span class="step-label">선택</span>
-  </div>
-  <div class="step-item" data-step="4">
-    <div class="step-dot">4</div>
-    <span class="step-label">합성</span>
-  </div>
-  <div class="step-item" data-step="5">
-    <div class="step-dot">5</div>
-    <span class="step-label">저장</span>
-  </div>
+  <div class="step-item active" data-step="1"><div class="step-dot">1</div><span class="step-label">카메라</span></div>
+  <div class="step-item" data-step="2"><div class="step-dot">2</div><span class="step-label">촬영</span></div>
+  <div class="step-item" data-step="3"><div class="step-dot">3</div><span class="step-label">선택</span></div>
+  <div class="step-item" data-step="4"><div class="step-dot">4</div><span class="step-label">꾸미기</span></div>
+  <div class="step-item" data-step="5"><div class="step-dot">5</div><span class="step-label">저장</span></div>
 </div>
 
 <main>
 
-  <!-- Error screen -->
+  <!-- Error -->
   <div class="screen" id="screenError">
     <div class="error-box">
       <div class="icon">📵</div>
@@ -462,7 +346,7 @@
     </div>
   </div>
 
-  <!-- Camera / Shoot screen (steps 1 & 2) -->
+  <!-- Camera / Shoot -->
   <div class="screen active" id="screenCamera">
     <div class="camera-layout">
       <div class="camera-col">
@@ -474,20 +358,18 @@
         <div class="shot-count" id="shotCount">카메라를 준비 중입니다…</div>
         <div class="camera-controls">
           <button class="btn btn-primary" id="btnShoot" onclick="startCountdown()" disabled>📷 촬영</button>
-          <button class="btn btn-secondary btn-sm" id="btnFlip" onclick="toggleMirror()" title="좌우 반전">🔁 반전</button>
-          <button class="btn btn-secondary btn-sm" id="btnSwitch" onclick="switchCamera()" title="카메라 전환">🔄 전환</button>
+          <button class="btn btn-secondary btn-sm" onclick="toggleMirror()">🔁 반전</button>
+          <button class="btn btn-secondary btn-sm" onclick="switchCamera()">🔄 전환</button>
         </div>
       </div>
       <div class="thumbs-col">
         <h3>촬영된 사진</h3>
-        <div class="thumb-list" id="thumbList">
-          <!-- 4 slots rendered by JS -->
-        </div>
+        <div class="thumb-list" id="thumbList"></div>
       </div>
     </div>
   </div>
 
-  <!-- Select screen (step 3) -->
+  <!-- Select -->
   <div class="screen" id="screenSelect">
     <div class="select-instruction">
       <p>원하는 사진 2장을 선택하세요</p>
@@ -496,19 +378,78 @@
     <div class="select-grid" id="selectGrid"></div>
     <div class="select-actions">
       <button class="btn btn-secondary" onclick="goBackToCamera()">↩ 다시 촬영</button>
-      <button class="btn btn-primary" id="btnCompose" onclick="composeImage()" disabled>✅ 두 장 고르기</button>
+      <button class="btn btn-primary" id="btnCompose" onclick="composeAndDecorate()" disabled>✅ 두 장 고르기</button>
     </div>
   </div>
 
-  <!-- Result screen (steps 4 & 5) -->
+  <!-- ★ Decorate -->
+  <div class="screen" id="screenDecorate">
+    <div class="deco-wrap">
+
+      <!-- 흰 테두리 + 날짜 옵션 -->
+      <div class="deco-options">
+        <label class="toggle-label">
+          <input type="checkbox" id="toggleBorder" onchange="updateBorderPreview()">
+          <span>🖼️ 흰 테두리 + 날짜</span>
+        </label>
+        <input type="text" id="dateInput" class="date-input-field" placeholder="2026.04.25">
+      </div>
+
+      <!-- 사진 미리보기 + 스티커 레이어 -->
+      <div class="deco-preview-wrap" id="decoPreviewWrap">
+        <img id="decoBaseImg" src="" alt="합성 사진">
+        <div class="sticker-layer" id="stickerLayer" onclick="onLayerClick(event)"></div>
+        <div class="border-date-text" id="borderDateText" style="display:none"></div>
+      </div>
+
+      <!-- 탭 -->
+      <div class="deco-tabs">
+        <button class="tab-btn active" id="tabBtnEmoji" onclick="switchTab('emoji')">😊 이모지</button>
+        <button class="tab-btn" id="tabBtnText" onclick="switchTab('text')">✏️ 텍스트</button>
+      </div>
+
+      <!-- 이모지 패널 -->
+      <div class="tab-panel active" id="panelEmoji">
+        <div class="emoji-grid" id="emojiGrid"></div>
+      </div>
+
+      <!-- 텍스트 패널 -->
+      <div class="tab-panel" id="panelText">
+        <div class="text-panel">
+          <div class="text-input-row">
+            <input type="text" id="textStickerInput" class="text-sticker-field" placeholder="텍스트를 입력하세요" maxlength="30">
+            <button class="btn btn-primary btn-sm" onclick="addTextSticker()">추가</button>
+          </div>
+          <div class="color-row">
+            <span>색상</span>
+            <div id="colorSwatches"></div>
+          </div>
+          <div class="size-row">
+            <span>크기</span>
+            <input type="range" id="textSizeRange" min="16" max="64" value="32" oninput="updateSizePreview()">
+            <span class="size-val" id="sizeVal">32</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 전체 지우기 -->
+      <span class="deco-clear" onclick="clearAllStickers()">🗑️ 스티커 모두 지우기</span>
+
+      <!-- 액션 -->
+      <div class="deco-actions">
+        <button class="btn btn-secondary" onclick="goBackToSelect()">↩ 다시 선택</button>
+        <button class="btn btn-primary" onclick="finalizeDeco()">✅ 완성하기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Result / Save -->
   <div class="screen" id="screenResult">
     <div class="result-wrap">
       <div class="result-preview">
         <img id="resultImg" src="" alt="합성 결과">
       </div>
-      <div class="result-info">
-        630 × 1020 px &nbsp;|&nbsp; 2.1 × 3.4인치 &nbsp;|&nbsp; 300 DPI
-      </div>
+      <div class="result-info" id="resultInfo">630 × 1020 px &nbsp;|&nbsp; 2.1 × 3.4인치 &nbsp;|&nbsp; 300 DPI</div>
       <div class="result-actions">
         <button class="btn btn-success" onclick="download('png')">💾 PNG 저장</button>
         <button class="btn btn-success" onclick="download('jpg')">💾 JPG 저장</button>
@@ -522,107 +463,99 @@
 <canvas id="compositeCanvas" width="630" height="1020"></canvas>
 
 <script>
-// ─── App Icon 생성 (홈화면 추가 시 "2" 아이콘) ────────────
+// ─── App Icon ────────────────────────────────────────────
 (function () {
   const ic = document.createElement('canvas');
   ic.width = 180; ic.height = 180;
   const c = ic.getContext('2d');
-  // 둥근 배경
   const r = 36;
   c.beginPath();
-  c.moveTo(r, 0); c.lineTo(180 - r, 0);
-  c.quadraticCurveTo(180, 0, 180, r);
-  c.lineTo(180, 180 - r);
-  c.quadraticCurveTo(180, 180, 180 - r, 180);
-  c.lineTo(r, 180);
-  c.quadraticCurveTo(0, 180, 0, 180 - r);
-  c.lineTo(0, r);
-  c.quadraticCurveTo(0, 0, r, 0);
-  c.closePath();
+  c.moveTo(r, 0); c.lineTo(180-r, 0); c.quadraticCurveTo(180, 0, 180, r);
+  c.lineTo(180, 180-r); c.quadraticCurveTo(180, 180, 180-r, 180);
+  c.lineTo(r, 180); c.quadraticCurveTo(0, 180, 0, 180-r);
+  c.lineTo(0, r); c.quadraticCurveTo(0, 0, r, 0); c.closePath();
   const g = c.createLinearGradient(0, 0, 180, 180);
-  g.addColorStop(0, '#00b4d8');
-  g.addColorStop(1, '#0077b6');
-  c.fillStyle = g;
-  c.fill();
-  // "2" 텍스트
-  c.fillStyle = '#ffffff';
-  c.font = 'bold 120px Arial, sans-serif';
-  c.textAlign = 'center';
-  c.textBaseline = 'middle';
-  c.fillText('2', 90, 94);
+  g.addColorStop(0, '#00b4d8'); g.addColorStop(1, '#0077b6');
+  c.fillStyle = g; c.fill();
+  c.fillStyle = '#fff'; c.font = 'bold 120px Arial, sans-serif';
+  c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('2', 90, 94);
   const url = ic.toDataURL('image/png');
   document.getElementById('appleIcon').href = url;
-  const fav = document.createElement('link');
-  fav.rel = 'icon'; fav.type = 'image/png'; fav.href = url;
+  const fav = document.createElement('link'); fav.rel = 'icon'; fav.type = 'image/png'; fav.href = url;
   document.head.appendChild(fav);
 })();
 
-// ─── State ───────────────────────────────────────────────
+// ─── Constants ───────────────────────────────────────────
 const MAX_SHOTS = 4;
 const CANVAS_W = 630;
 const CANVAS_H = 1020;
-const HALF_H = CANVAS_H / 2; // 510
+const HALF_H   = CANVAS_H / 2;
 
-let stream = null;
-let currentFacingMode = 'user';
-let mirrored = true; // selfie mode on by default
-let photos = Array(MAX_SHOTS).fill(null); // DataURLs
-let retakeIndex = -1; // which slot is being retaken
-let selectedIndices = []; // up to 2
+const EMOJIS = [
+  '❤️','🧡','💛','💚','💙','💜','🖤','🤍','🩷',
+  '💕','💞','💗','💖','💝','💘','😊','😄','😍',
+  '🥰','😘','🤩','😎','🤗','🫶','👑','💎','🪄',
+  '🦄','✨','⭐','🌟','💫','🔥','⚡','🌈','🌙',
+  '☁️','🌸','🌺','🌻','🌼','🌹','🍀','🦋','🌊',
+  '🌴','🍃','🎀','🎁','🎉','🎊','🎈','🎶','🎵',
+  '📷','📸','🥂','🍭','🍰','🧁','😂','😭','🥹',
+];
+
+const TEXT_COLORS = [
+  { hex: '#ffffff', label: '흰색' },
+  { hex: '#000000', label: '검정' },
+  { hex: '#ff6b9d', label: '핑크' },
+  { hex: '#00b4d8', label: '하늘' },
+  { hex: '#ffd166', label: '노랑' },
+  { hex: '#ef476f', label: '빨강' },
+  { hex: '#06d6a0', label: '초록' },
+  { hex: '#ff9f1c', label: '주황' },
+];
+
+// ─── State ───────────────────────────────────────────────
+let stream         = null;
+let currentFacing  = 'user';
+let mirrored       = true;
+let photos         = Array(MAX_SHOTS).fill(null);
+let retakeIndex    = -1;
+let selectedIdx    = [];
 let isCountingDown = false;
+let baseCanvas     = null; // offscreen composite (no decorations)
+let activeStickerEl = null;
+let activeTextColor = '#ffffff';
 
-const video = document.getElementById('video');
-const videoWrap = document.getElementById('videoWrap');
-const countdownOverlay = document.getElementById('countdownOverlay');
-const flashOverlay = document.getElementById('flashOverlay');
-const btnShoot = document.getElementById('btnShoot');
-const thumbList = document.getElementById('thumbList');
-const shotCountEl = document.getElementById('shotCount');
-const canvas = document.getElementById('compositeCanvas');
-const ctx = canvas.getContext('2d');
+// ─── DOM refs ────────────────────────────────────────────
+const video           = document.getElementById('video');
+const videoWrap       = document.getElementById('videoWrap');
+const countdownOverlay= document.getElementById('countdownOverlay');
+const flashOverlay    = document.getElementById('flashOverlay');
+const btnShoot        = document.getElementById('btnShoot');
+const thumbList       = document.getElementById('thumbList');
+const shotCountEl     = document.getElementById('shotCount');
+const canvas          = document.getElementById('compositeCanvas');
+const ctx             = canvas.getContext('2d');
 
-// ─── Init ─────────────────────────────────────────────────
+// ─── Init ────────────────────────────────────────────────
+buildEmojiGrid();
+buildColorSwatches();
 renderThumbSlots();
 initCamera();
 
+// ─── Camera ──────────────────────────────────────────────
 async function initCamera() {
-  showScreen('screenCamera');
-  setStep(1);
+  showScreen('screenCamera'); setStep(1);
   btnShoot.disabled = true;
   shotCountEl.textContent = '카메라를 준비 중입니다…';
-
-  if (stream) {
-    stream.getTracks().forEach(t => t.stop());
-    stream = null;
-  }
-
-  const constraints = {
-    video: {
-      facingMode: { ideal: currentFacingMode },
-      width: { ideal: 1280 },
-      height: { ideal: 960 }
-    },
-    audio: false
-  };
-
+  if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
+  const constraints = { video: { facingMode: { ideal: currentFacing }, width: { ideal: 1280 }, height: { ideal: 960 } }, audio: false };
   try {
     stream = await navigator.mediaDevices.getUserMedia(constraints);
   } catch (e) {
-    if (currentFacingMode === 'user') {
-      try {
-        currentFacingMode = 'environment';
-        constraints.video.facingMode = { ideal: 'environment' };
-        stream = await navigator.mediaDevices.getUserMedia(constraints);
-      } catch (e2) {
-        showError(e2);
-        return;
-      }
-    } else {
-      showError(e);
-      return;
-    }
+    if (currentFacing === 'user') {
+      try { currentFacing = 'environment'; constraints.video.facingMode = { ideal: 'environment' }; stream = await navigator.mediaDevices.getUserMedia(constraints); }
+      catch (e2) { showError(e2); return; }
+    } else { showError(e); return; }
   }
-
   video.srcObject = stream;
   await video.play();
   updateMirror();
@@ -632,352 +565,442 @@ async function initCamera() {
 }
 
 function showError(err) {
-  let title = '카메라 오류';
-  let msg = '';
+  let title = '카메라 오류', msg = '';
   if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
     title = '카메라 권한 필요';
-    msg = '카메라 접근 권한이 필요합니다. 브라우저 주소창 옆 잠금 아이콘을 눌러 카메라 권한을 허용해 주세요.';
+    msg   = '카메라 접근 권한이 필요합니다. 브라우저 주소창 옆 잠금 아이콘을 눌러 카메라 권한을 허용해 주세요.';
   } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
     title = '카메라를 찾을 수 없습니다';
-    msg = '연결된 카메라 장치가 없습니다. 카메라를 연결하거나 다른 기기에서 사용해 보세요.';
-  } else {
-    msg = `오류: ${err.message || err.name}`;
-  }
+    msg   = '연결된 카메라 장치가 없습니다. 카메라를 연결하거나 다른 기기에서 사용해 보세요.';
+  } else { msg = `오류: ${err.message || err.name}`; }
   document.getElementById('errorTitle').textContent = title;
-  document.getElementById('errorMsg').textContent = msg;
+  document.getElementById('errorMsg').textContent   = msg;
   showScreen('screenError');
 }
 
-// ─── Mirror / Switch ──────────────────────────────────────
-function toggleMirror() {
-  mirrored = !mirrored;
-  updateMirror();
-}
+function toggleMirror() { mirrored = !mirrored; updateMirror(); }
+function updateMirror()  { videoWrap.classList.toggle('mirrored', mirrored); }
+async function switchCamera() { currentFacing = currentFacing === 'user' ? 'environment' : 'user'; mirrored = currentFacing === 'user'; await initCamera(); }
 
-function updateMirror() {
-  videoWrap.classList.toggle('mirrored', mirrored);
-}
-
-async function switchCamera() {
-  currentFacingMode = currentFacingMode === 'user' ? 'environment' : 'user';
-  mirrored = currentFacingMode === 'user';
-  await initCamera();
-}
-
-// ─── Countdown & Shoot ───────────────────────────────────
+// ─── Countdown / Capture ─────────────────────────────────
 function startCountdown() {
   if (isCountingDown) return;
-
   const isRetake = retakeIndex >= 0;
-  const targetSlot = isRetake ? retakeIndex : photos.indexOf(null);
-  if (targetSlot === -1) return;
-
-  runCountdown(targetSlot, !isRetake);
+  const slot = isRetake ? retakeIndex : photos.indexOf(null);
+  if (slot === -1) return;
+  runCountdown(slot, !isRetake);
 }
 
-function runCountdown(targetSlot, autoContinue) {
-  isCountingDown = true;
-  btnShoot.disabled = true;
-
+function runCountdown(slot, autoContinue) {
+  isCountingDown = true; btnShoot.disabled = true;
   let count = 3;
-  countdownOverlay.textContent = count;
-  countdownOverlay.classList.add('visible');
-
+  countdownOverlay.textContent = count; countdownOverlay.classList.add('visible');
   const tick = setInterval(() => {
     count--;
     if (count <= 0) {
-      clearInterval(tick);
-      countdownOverlay.textContent = '📷';
-      setTimeout(() => {
-        countdownOverlay.classList.remove('visible');
-        capturePhoto(targetSlot, autoContinue);
-      }, 400);
-    } else {
-      countdownOverlay.textContent = count;
-    }
+      clearInterval(tick); countdownOverlay.textContent = '📷';
+      setTimeout(() => { countdownOverlay.classList.remove('visible'); capturePhoto(slot, autoContinue); }, 400);
+    } else { countdownOverlay.textContent = count; }
   }, 1000);
 }
 
 function capturePhoto(slotIndex, autoContinue) {
-  // Flash
   flashOverlay.classList.add('flash');
   setTimeout(() => flashOverlay.classList.remove('flash'), 150);
-
-  // Draw current video frame to a temp canvas
-  const tempCanvas = document.createElement('canvas');
-  tempCanvas.width = video.videoWidth || 640;
-  tempCanvas.height = video.videoHeight || 480;
-  const tCtx = tempCanvas.getContext('2d');
-
-  if (mirrored) {
-    tCtx.translate(tempCanvas.width, 0);
-    tCtx.scale(-1, 1);
-  }
-  tCtx.drawImage(video, 0, 0, tempCanvas.width, tempCanvas.height);
-
-  photos[slotIndex] = tempCanvas.toDataURL('image/jpeg', 0.92);
-  retakeIndex = -1;
-  isCountingDown = false;
-  renderThumbSlots();
-  updateShotCount();
-
+  const tc = document.createElement('canvas');
+  tc.width  = video.videoWidth  || 640;
+  tc.height = video.videoHeight || 480;
+  const tCtx = tc.getContext('2d');
+  if (mirrored) { tCtx.translate(tc.width, 0); tCtx.scale(-1, 1); }
+  tCtx.drawImage(video, 0, 0, tc.width, tc.height);
+  photos[slotIndex] = tc.toDataURL('image/jpeg', 0.92);
+  retakeIndex = -1; isCountingDown = false;
+  renderThumbSlots(); updateShotCount();
   const filled = photos.filter(Boolean).length;
-
   if (filled === MAX_SHOTS) {
     setTimeout(goToSelect, 800);
   } else if (autoContinue) {
-    // 다음 슬롯을 3초 카운트다운으로 자동 촬영
-    setTimeout(() => {
-      const nextSlot = photos.indexOf(null);
-      if (nextSlot !== -1) runCountdown(nextSlot, true);
-    }, 600);
-  } else {
-    btnShoot.disabled = false;
-  }
+    setTimeout(() => { const next = photos.indexOf(null); if (next !== -1) runCountdown(next, true); }, 600);
+  } else { btnShoot.disabled = false; }
 }
 
 function updateShotCount() {
   const filled = photos.filter(Boolean).length;
-  if (filled === 0) {
-    shotCountEl.innerHTML = '첫 번째 사진을 촬영하세요';
-  } else if (filled < MAX_SHOTS) {
-    shotCountEl.innerHTML = `<strong>${filled}</strong> / ${MAX_SHOTS} 촬영 완료`;
-  } else {
-    shotCountEl.innerHTML = `<strong>${MAX_SHOTS}</strong> / ${MAX_SHOTS} 촬영 완료 ✅`;
-  }
+  if      (filled === 0)          shotCountEl.innerHTML = '첫 번째 사진을 촬영하세요';
+  else if (filled < MAX_SHOTS)    shotCountEl.innerHTML = `<strong>${filled}</strong> / ${MAX_SHOTS} 촬영 완료`;
+  else                            shotCountEl.innerHTML = `<strong>${MAX_SHOTS}</strong> / ${MAX_SHOTS} 촬영 완료 ✅`;
 }
 
-// ─── Thumbnail slots ──────────────────────────────────────
+// ─── Thumbnails ──────────────────────────────────────────
 function renderThumbSlots() {
   thumbList.innerHTML = '';
   for (let i = 0; i < MAX_SHOTS; i++) {
     const item = document.createElement('div');
     item.className = 'thumb-item' + (photos[i] ? '' : ' empty');
-
     if (photos[i]) {
-      const img = document.createElement('img');
-      img.src = photos[i];
-      img.alt = `사진 ${i + 1}`;
-      item.appendChild(img);
-
+      const img = document.createElement('img'); img.src = photos[i]; img.alt = `사진 ${i+1}`; item.appendChild(img);
       const btn = document.createElement('button');
-      btn.className = 'btn btn-danger btn-sm thumb-retake';
-      btn.textContent = '🔄 다시 찍기';
-      btn.onclick = () => triggerRetake(i);
-      item.appendChild(btn);
-    } else {
-      item.innerHTML = `<span class="num">${i + 1}</span><span>대기 중</span>`;
-    }
-
+      btn.className = 'btn btn-danger btn-sm thumb-retake'; btn.textContent = '🔄 다시 찍기';
+      btn.onclick = () => triggerRetake(i); item.appendChild(btn);
+    } else { item.innerHTML = `<span class="num">${i+1}</span><span>대기 중</span>`; }
     thumbList.appendChild(item);
   }
 }
 
 function triggerRetake(index) {
-  retakeIndex = index;
-  photos[index] = null;
-  renderThumbSlots();
-  updateShotCount();
-  // Highlight which slot
-  shotCountEl.innerHTML = `<strong>${index + 1}번</strong> 사진을 다시 촬영하세요`;
+  retakeIndex = index; photos[index] = null;
+  renderThumbSlots(); updateShotCount();
+  shotCountEl.innerHTML = `<strong>${index+1}번</strong> 사진을 다시 촬영하세요`;
 }
 
-// ─── Navigation ───────────────────────────────────────────
+// ─── Navigate: Select ────────────────────────────────────
 function goToSelect() {
-  showScreen('screenSelect');
-  setStep(3);
-  selectedIndices = [];
-  buildSelectGrid();
-  updateSelectUI();
+  showScreen('screenSelect'); setStep(3);
+  selectedIdx = []; buildSelectGrid(); updateSelectUI();
 }
 
 function goBackToCamera() {
-  showScreen('screenCamera');
-  setStep(2);
-  renderThumbSlots();
-  updateShotCount();
+  showScreen('screenCamera'); setStep(2); renderThumbSlots(); updateShotCount();
 }
 
 function buildSelectGrid() {
-  const grid = document.getElementById('selectGrid');
-  grid.innerHTML = '';
-  photos.forEach((dataUrl, i) => {
-    const item = document.createElement('div');
-    item.className = 'select-item';
-    item.dataset.index = i;
-
-    const img = document.createElement('img');
-    img.src = dataUrl;
-    img.alt = `사진 ${i + 1}`;
-    item.appendChild(img);
-
-    const badge = document.createElement('div');
-    badge.className = 'select-badge';
-    item.appendChild(badge);
-
-    item.onclick = () => toggleSelect(i);
-    grid.appendChild(item);
+  const grid = document.getElementById('selectGrid'); grid.innerHTML = '';
+  photos.forEach((url, i) => {
+    const item = document.createElement('div'); item.className = 'select-item'; item.dataset.index = i;
+    const img  = document.createElement('img'); img.src = url; img.alt = `사진 ${i+1}`; item.appendChild(img);
+    const badge = document.createElement('div'); badge.className = 'select-badge'; item.appendChild(badge);
+    item.onclick = () => toggleSelect(i); grid.appendChild(item);
   });
 }
 
 function toggleSelect(index) {
-  const pos = selectedIndices.indexOf(index);
-  if (pos !== -1) {
-    selectedIndices.splice(pos, 1);
-  } else {
-    if (selectedIndices.length >= 2) return;
-    selectedIndices.push(index);
-  }
+  const pos = selectedIdx.indexOf(index);
+  if (pos !== -1) selectedIdx.splice(pos, 1);
+  else { if (selectedIdx.length >= 2) return; selectedIdx.push(index); }
   updateSelectUI();
 }
 
 function updateSelectUI() {
-  const items = document.querySelectorAll('.select-item');
-  items.forEach((item, i) => {
-    const selPos = selectedIndices.indexOf(i);
+  document.querySelectorAll('.select-item').forEach((item, i) => {
+    const pos = selectedIdx.indexOf(i);
     const badge = item.querySelector('.select-badge');
-    if (selPos !== -1) {
-      item.classList.add('selected');
-      badge.textContent = selPos === 0 ? '①' : '②';
+    if (pos !== -1) { item.classList.add('selected'); badge.textContent = pos === 0 ? '①' : '②'; }
+    else            { item.classList.remove('selected'); badge.textContent = ''; }
+  });
+  document.getElementById('selectCountText').textContent = `선택됨: ${selectedIdx.length} / 2`;
+  document.getElementById('btnCompose').disabled = selectedIdx.length !== 2;
+}
+
+// ─── Compose → Decorate ──────────────────────────────────
+function composeAndDecorate() {
+  if (selectedIdx.length !== 2) return;
+  const [i1, i2] = selectedIdx;
+  const img1 = new Image(), img2 = new Image();
+  let loaded = 0;
+  function onLoad() {
+    if (++loaded < 2) return;
+    // render to offscreen baseCanvas (always 630×1020)
+    baseCanvas = document.createElement('canvas');
+    baseCanvas.width = CANVAS_W; baseCanvas.height = CANVAS_H;
+    const bCtx = baseCanvas.getContext('2d');
+    bCtx.fillStyle = '#ffffff'; bCtx.fillRect(0, 0, CANVAS_W, CANVAS_H);
+    drawCover(bCtx, img1, 0, 0, CANVAS_W, HALF_H);
+    bCtx.fillStyle = '#ffffff'; bCtx.fillRect(0, HALF_H-1, CANVAS_W, 2);
+    drawCover(bCtx, img2, 0, HALF_H, CANVAS_W, HALF_H);
+    // show on decorate screen
+    document.getElementById('decoBaseImg').src = baseCanvas.toDataURL('image/jpeg', 0.95);
+    initDecorateScreen();
+    showScreen('screenDecorate'); setStep(4);
+  }
+  img1.onload = onLoad; img2.onload = onLoad;
+  img1.src = photos[i1]; img2.src = photos[i2];
+}
+
+function drawCover(c, img, x, y, w, h) {
+  const ia = img.naturalWidth / img.naturalHeight, ba = w / h;
+  let sx, sy, sw, sh;
+  if (ia > ba) { sh = img.naturalHeight; sw = sh * ba; sx = (img.naturalWidth - sw) / 2; sy = 0; }
+  else         { sw = img.naturalWidth;  sh = sw / ba; sx = 0; sy = (img.naturalHeight - sh) / 2; }
+  c.drawImage(img, sx, sy, sw, sh, x, y, w, h);
+}
+
+// ─── Decorate screen init ─────────────────────────────────
+function initDecorateScreen() {
+  // clear stickers
+  document.getElementById('stickerLayer').innerHTML = '';
+  activeStickerEl = null;
+  // date
+  const d = new Date();
+  document.getElementById('dateInput').value =
+    `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+  // border off
+  document.getElementById('toggleBorder').checked = false;
+  document.getElementById('decoPreviewWrap').classList.remove('has-border');
+  document.getElementById('borderDateText').style.display = 'none';
+}
+
+function updateBorderPreview() {
+  const on  = document.getElementById('toggleBorder').checked;
+  const wrap = document.getElementById('decoPreviewWrap');
+  const dt   = document.getElementById('borderDateText');
+  wrap.classList.toggle('has-border', on);
+  if (on) {
+    dt.style.display = 'block';
+    dt.textContent   = document.getElementById('dateInput').value;
+    document.getElementById('dateInput').oninput = () => { dt.textContent = document.getElementById('dateInput').value; };
+  } else {
+    dt.style.display = 'none';
+    document.getElementById('dateInput').oninput = null;
+  }
+}
+
+function goBackToSelect() {
+  document.getElementById('stickerLayer').innerHTML = '';
+  activeStickerEl = null;
+  showScreen('screenSelect'); setStep(3);
+}
+
+// ─── Emoji panel ──────────────────────────────────────────
+function buildEmojiGrid() {
+  const grid = document.getElementById('emojiGrid');
+  EMOJIS.forEach(em => {
+    const btn = document.createElement('button');
+    btn.className = 'emoji-btn'; btn.textContent = em;
+    btn.onclick = () => addSticker('emoji', em);
+    grid.appendChild(btn);
+  });
+}
+
+// ─── Text / color panel ───────────────────────────────────
+function buildColorSwatches() {
+  const wrap = document.getElementById('colorSwatches');
+  wrap.style.display = 'flex'; wrap.style.gap = '6px'; wrap.style.flexWrap = 'wrap';
+  TEXT_COLORS.forEach((c, i) => {
+    const sw = document.createElement('div');
+    sw.className = 'color-swatch' + (i === 0 ? ' active' : '');
+    sw.style.background = c.hex; sw.title = c.label;
+    sw.onclick = () => {
+      document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
+      sw.classList.add('active'); activeTextColor = c.hex;
+    };
+    wrap.appendChild(sw);
+  });
+}
+
+function updateSizePreview() {
+  document.getElementById('sizeVal').textContent = document.getElementById('textSizeRange').value;
+}
+
+function addTextSticker() {
+  const val = document.getElementById('textStickerInput').value.trim();
+  if (!val) return;
+  const size  = parseInt(document.getElementById('textSizeRange').value);
+  addSticker('text', val, activeTextColor, size);
+  document.getElementById('textStickerInput').value = '';
+}
+
+// ─── Sticker factory ──────────────────────────────────────
+function addSticker(type, content, color = '#fff', size = 36) {
+  const layer = document.getElementById('stickerLayer');
+  const imgEl = document.getElementById('decoBaseImg');
+
+  const el = document.createElement('div');
+  el.className = 'sticker';
+  el.dataset.type    = type;
+  el.dataset.content = content;
+  el.dataset.color   = color;
+  el.dataset.size    = size;
+
+  if (type === 'emoji') {
+    el.style.fontSize = size + 'px';
+    el.textContent    = content;
+  } else {
+    el.style.fontSize  = size + 'px';
+    el.style.color     = color;
+    el.style.fontWeight = '700';
+    el.style.textShadow = '0 1px 4px rgba(0,0,0,0.7)';
+    el.style.whiteSpace = 'nowrap';
+    el.textContent      = content;
+  }
+
+  // Default: center of image
+  el.style.left = (imgEl.offsetWidth  / 2) + 'px';
+  el.style.top  = (imgEl.offsetHeight / 2) + 'px';
+
+  // Delete button
+  const del = document.createElement('button');
+  del.className = 'sticker-del'; del.textContent = '✕';
+  del.onpointerdown = e => { e.stopPropagation(); el.remove(); activeStickerEl = null; };
+  el.appendChild(del);
+
+  makeDraggable(el);
+  layer.appendChild(el);
+  selectSticker(el);
+}
+
+// ─── Dragging ─────────────────────────────────────────────
+function makeDraggable(el) {
+  let sx, sy, ox, oy;
+  el.addEventListener('pointerdown', e => {
+    if (e.target.classList.contains('sticker-del')) return;
+    e.preventDefault(); e.stopPropagation();
+    el.setPointerCapture(e.pointerId);
+    selectSticker(el);
+    sx = e.clientX; sy = e.clientY;
+    ox = parseFloat(el.style.left); oy = parseFloat(el.style.top);
+  });
+  el.addEventListener('pointermove', e => {
+    if (!(e.buttons & 1)) return;
+    el.style.left = (ox + e.clientX - sx) + 'px';
+    el.style.top  = (oy + e.clientY - sy) + 'px';
+  });
+}
+
+function selectSticker(el) {
+  if (activeStickerEl) activeStickerEl.classList.remove('selected');
+  activeStickerEl = el; el.classList.add('selected');
+}
+
+function onLayerClick(e) {
+  if (e.target === document.getElementById('stickerLayer')) {
+    if (activeStickerEl) { activeStickerEl.classList.remove('selected'); activeStickerEl = null; }
+  }
+}
+
+function clearAllStickers() {
+  document.getElementById('stickerLayer').innerHTML = '';
+  activeStickerEl = null;
+}
+
+// ─── Tab switching ────────────────────────────────────────
+function switchTab(tab) {
+  document.getElementById('panelEmoji').classList.toggle('active', tab === 'emoji');
+  document.getElementById('panelText').classList.toggle('active', tab === 'text');
+  document.getElementById('tabBtnEmoji').classList.toggle('active', tab === 'emoji');
+  document.getElementById('tabBtnText').classList.toggle('active', tab === 'text');
+}
+
+// ─── Finalize with decorations ───────────────────────────
+function finalizeDeco() {
+  if (!baseCanvas) return;
+  const hasBorder = document.getElementById('toggleBorder').checked;
+  const dateText  = document.getElementById('dateInput').value.trim();
+
+  const B  = hasBorder ? 25  : 0; // side border
+  const DH = hasBorder ? 60  : 0; // bottom date strip
+  const BT = hasBorder ? 20  : 0; // top border
+
+  const finalW = CANVAS_W + B * 2;
+  const finalH = CANVAS_H + BT + DH;
+
+  canvas.width  = finalW;
+  canvas.height = finalH;
+
+  // White background
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, finalW, finalH);
+
+  // Base photo
+  ctx.drawImage(baseCanvas, B, BT, CANVAS_W, CANVAS_H);
+
+  // Date text
+  if (hasBorder && dateText) {
+    ctx.fillStyle    = '#333333';
+    ctx.font         = 'bold 22px -apple-system, Arial, sans-serif';
+    ctx.textAlign    = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(dateText, finalW / 2, CANVAS_H + BT + DH / 2);
+  }
+
+  // Stickers
+  const layer = document.getElementById('stickerLayer');
+  const imgEl = document.getElementById('decoBaseImg');
+  const sx    = CANVAS_W / imgEl.offsetWidth;
+  const sy    = CANVAS_H / imgEl.offsetHeight;
+
+  layer.querySelectorAll('.sticker').forEach(el => {
+    const cx   = parseFloat(el.style.left) * sx + B;
+    const cy   = parseFloat(el.style.top)  * sy + BT;
+    const dSz  = parseFloat(el.dataset.size);
+    const cSz  = dSz * Math.min(sx, sy);
+    const type = el.dataset.type;
+    const cont = el.dataset.content;
+    const col  = el.dataset.color;
+
+    ctx.save();
+    ctx.textAlign    = 'center';
+    ctx.textBaseline = 'middle';
+
+    if (type === 'emoji') {
+      ctx.font = `${cSz}px "Apple Color Emoji","Noto Color Emoji","Segoe UI Emoji",serif`;
+      ctx.fillText(cont, cx, cy);
     } else {
-      item.classList.remove('selected');
-      badge.textContent = '';
+      ctx.font        = `bold ${cSz}px -apple-system, Arial, sans-serif`;
+      ctx.shadowColor = 'rgba(0,0,0,0.65)';
+      ctx.shadowBlur  = cSz / 5;
+      ctx.fillStyle   = col;
+      ctx.fillText(cont, cx, cy);
     }
+    ctx.restore();
   });
 
-  const count = selectedIndices.length;
-  document.getElementById('selectCountText').textContent = `선택됨: ${count} / 2`;
-  document.getElementById('btnCompose').disabled = count !== 2;
-}
-
-// ─── Compose ─────────────────────────────────────────────
-function composeImage() {
-  if (selectedIndices.length !== 2) return;
-  setStep(4);
-
-  const [idx1, idx2] = selectedIndices;
-
-  const img1 = new Image();
-  const img2 = new Image();
-  let loaded = 0;
-
-  function onLoad() {
-    loaded++;
-    if (loaded < 2) return;
-
-    // White background
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
-
-    // Draw top photo
-    drawCover(ctx, img1, 0, 0, CANVAS_W, HALF_H);
-
-    // 1px white separator (already white background, draw a subtle line)
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(0, HALF_H - 1, CANVAS_W, 2);
-
-    // Draw bottom photo
-    drawCover(ctx, img2, 0, HALF_H, CANVAS_W, HALF_H);
-
-    // Show result
-    const dataUrl = canvas.toDataURL('image/png');
-    document.getElementById('resultImg').src = dataUrl;
-    showScreen('screenResult');
-    setStep(5);
-  }
-
-  img1.onload = onLoad;
-  img2.onload = onLoad;
-  img1.src = photos[idx1];
-  img2.src = photos[idx2];
-}
-
-// object-fit: cover approach
-function drawCover(ctx, img, x, y, w, h) {
-  const imgAspect = img.naturalWidth / img.naturalHeight;
-  const boxAspect = w / h;
-
-  let srcX, srcY, srcW, srcH;
-
-  if (imgAspect > boxAspect) {
-    // image wider than box — crop sides
-    srcH = img.naturalHeight;
-    srcW = srcH * boxAspect;
-    srcX = (img.naturalWidth - srcW) / 2;
-    srcY = 0;
-  } else {
-    // image taller than box — crop top/bottom
-    srcW = img.naturalWidth;
-    srcH = srcW / boxAspect;
-    srcX = 0;
-    srcY = (img.naturalHeight - srcH) / 2;
-  }
-
-  ctx.drawImage(img, srcX, srcY, srcW, srcH, x, y, w, h);
+  // Show result
+  const dataUrl = canvas.toDataURL('image/png');
+  document.getElementById('resultImg').src = dataUrl;
+  document.getElementById('resultInfo').textContent =
+    `${finalW} × ${finalH} px${hasBorder ? ' (테두리 포함)' : ''} | 300 DPI`;
+  showScreen('screenResult'); setStep(5);
 }
 
 // ─── Download ─────────────────────────────────────────────
 function download(format) {
-  const dataUrl = format === 'png'
-    ? canvas.toDataURL('image/png')
-    : canvas.toDataURL('image/jpeg', 0.95);
+  const dataUrl  = format === 'png' ? canvas.toDataURL('image/png') : canvas.toDataURL('image/jpeg', 0.95);
   const filename = format === 'png' ? 'photo_id.png' : 'photo_id.jpg';
-
-  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  const isIOS    = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
   if (isIOS) {
     const w = window.open('', '_blank');
     w.document.write(`<!DOCTYPE html>
-<html lang="ko">
-<head>
+<html lang="ko"><head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>사진 저장</title>
 <style>
-  body { margin: 0; background: #1a1a2e; display: flex; flex-direction: column;
-         align-items: center; justify-content: center; min-height: 100vh;
-         font-family: -apple-system, sans-serif; color: #e0e0e0; padding: 20px; }
-  img { max-width: 100%; max-height: 70vh; border-radius: 12px;
-        box-shadow: 0 8px 40px rgba(0,0,0,0.6); display: block; }
-  .guide { margin-top: 24px; background: #0f3460; border-radius: 12px;
-           padding: 16px 20px; text-align: center; line-height: 1.8; }
-  .guide strong { color: #00b4d8; }
-  .btn-reset { margin-top: 20px; padding: 14px 32px; background: #0f3460;
-               color: #e0e0e0; border: none; border-radius: 12px; font-size: 1rem;
-               font-weight: 600; cursor: pointer; }
-</style>
-</head>
-<body>
+  body{margin:0;background:#1a1a2e;display:flex;flex-direction:column;align-items:center;
+       justify-content:center;min-height:100vh;font-family:-apple-system,sans-serif;
+       color:#e0e0e0;padding:20px;}
+  img{max-width:100%;max-height:70vh;border-radius:12px;box-shadow:0 8px 40px rgba(0,0,0,.6);display:block;}
+  .guide{margin-top:20px;background:#0f3460;border-radius:12px;padding:16px 20px;
+         text-align:center;line-height:1.9;}
+  .guide strong{color:#00b4d8;}
+  .btn-reset{margin-top:20px;padding:14px 32px;background:#0f3460;color:#e0e0e0;
+             border:none;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer;}
+</style></head><body>
 <img src="${dataUrl}">
 <div class="guide">
   이미지를 <strong>길게 누르기</strong><br>
   → <strong>"사진에 추가"</strong> 선택<br>
-  <span style="color:#8888aa;font-size:0.85rem">사진 앱 카메라 롤에 저장됩니다</span>
+  <span style="color:#8888aa;font-size:.85rem">사진 앱 카메라 롤에 저장됩니다</span>
 </div>
-<button class="btn-reset" onclick="window.opener && window.opener.resetAll(); window.close();">🔄 새로 촬영하기</button>
-</body>
-</html>`);
-    w.document.close();
-    return;
+<button class="btn-reset" onclick="window.opener&&window.opener.resetAll();window.close();">🔄 새로 촬영하기</button>
+</body></html>`);
+    w.document.close(); return;
   }
-
-  const a = document.createElement('a');
-  a.href = dataUrl;
-  a.download = filename;
-  a.click();
+  const a = document.createElement('a'); a.href = dataUrl; a.download = filename; a.click();
 }
 
 // ─── Reset ────────────────────────────────────────────────
 function resetAll() {
-  photos = Array(MAX_SHOTS).fill(null);
-  selectedIndices = [];
-  retakeIndex = -1;
+  photos       = Array(MAX_SHOTS).fill(null);
+  selectedIdx  = [];
+  retakeIndex  = -1;
+  baseCanvas   = null;
   isCountingDown = false;
   btnShoot.disabled = false;
-  renderThumbSlots();
-  updateShotCount();
-  showScreen('screenCamera');
-  setStep(2);
+  activeStickerEl = null;
+  document.getElementById('stickerLayer').innerHTML = '';
+  renderThumbSlots(); updateShotCount();
+  showScreen('screenCamera'); setStep(2);
 }
 
 // ─── Helpers ──────────────────────────────────────────────
@@ -985,11 +1008,10 @@ function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
-
 function setStep(n) {
   document.querySelectorAll('#progressBar .step-item').forEach(el => {
     const s = parseInt(el.dataset.step);
-    el.classList.remove('active', 'done');
+    el.classList.remove('active','done');
     if (s < n) el.classList.add('done');
     else if (s === n) el.classList.add('active');
   });
