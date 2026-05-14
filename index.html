@@ -106,9 +106,9 @@ video{width:100%;height:100%;object-fit:cover;display:block}
 
 .deco-preview-wrap{position:relative;width:100%;max-width:280px;border-radius:8px;transition:padding .2s,background .2s}
 .deco-preview-wrap img{width:100%;display:block;border-radius:8px;pointer-events:none;user-select:none;-webkit-user-select:none}
-.deco-preview-wrap.has-border{background:#fff;padding:8px 8px 44px;border-radius:4px}
+.deco-preview-wrap.has-border{background:#fff;padding:8px 8px 52px;border-radius:4px}
 .deco-preview-wrap.has-border img{border-radius:2px}
-.border-date-text{position:absolute;bottom:0;left:0;right:0;height:44px;line-height:44px;text-align:center;font-size:15px;color:#333;font-weight:700;pointer-events:none}
+.border-date-text{position:absolute;bottom:30px;left:0;right:0;height:22px;line-height:22px;text-align:center;font-size:15px;color:#333;font-weight:700;pointer-events:none}
 .sticker-layer{position:absolute;inset:0}
 
 /* stickers */
@@ -692,7 +692,7 @@ async function finalizeDeco(){
 
   const hasBorder=document.getElementById('toggleBorder').checked;
   const dateText=document.getElementById('dateInput').value.trim();
-  const B=hasBorder?25:0, DH=hasBorder?80:0, BT=hasBorder?20:0;
+  const B=hasBorder?25:0, DH=hasBorder?90:0, BT=hasBorder?20:0;
   const finalW=CANVAS_W+B*2, finalH=CANVAS_H+BT+DH;
   canvas.width=finalW;canvas.height=finalH;
   ctx.fillStyle='#ffffff';ctx.fillRect(0,0,finalW,finalH);
@@ -700,7 +700,7 @@ async function finalizeDeco(){
   if(hasBorder&&dateText){
     ctx.fillStyle='#333';ctx.font='bold 34px -apple-system,Arial,sans-serif';
     ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillText(dateText,finalW/2,CANVAS_H+BT+DH/2);
+    ctx.fillText(dateText,finalW/2,CANVAS_H+BT+22);
   }
 
   // collect stickers
